@@ -1,14 +1,14 @@
-from flask import Flask, render_template
+from flask import render_template, request
 import dao
-
-app = Flask(__name__)
+from saleapp.app import app
 
 
 @app.route('/')
 def index():
-    cates = dao.load_categorise()
-    product= dao.load_product()
-    return render_template('index.html', categories=cates, product= product)
+    kw = request.args.get('kw')
+    cates = dao.load_categories()
+    products = dao.load_products(kw)
+    return render_template('index.html', categories=cates, products=products)
 
 
 if __name__ == '__main__':
