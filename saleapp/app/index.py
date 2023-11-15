@@ -1,6 +1,6 @@
 from flask import render_template, request
 import dao
-from saleapp.app import app
+from saleapp.app import app,login
 
 
 @app.route('/')
@@ -9,6 +9,16 @@ def index():
     cates = dao.get_categories()
     products = dao.get_products(kw)
     return render_template('index.html', categories=cates, products=products)
+
+@app.route('/admin/login', methods=['post'])
+def admin_login():
+    request.form.get('username')
+    request.form.get('password')
+
+
+@login.user_loader  # mỗi lần login xong tự động nó sẽ get đối tượng user từ db và nó gắn cho cái biến current
+def get_user(user_id):
+    return dao.get_user_by_id(user_id)
 
 
 if __name__ == '__main__':
